@@ -184,7 +184,3 @@ Detail lengkap: [`docs/MODEL.md`](docs/MODEL.md) dan [`HANDOVER.md`](HANDOVER.md
 Python 3.12 · scikit-learn 1.6.1 · pandas 2.2.3 · FastAPI 0.141.1 · SHAP 0.52.0
 
 ---
-
-## Lisensi & Data
-
-Kode dalam repositori ini bersifat internal. **Data pasien tidak disertakan.** Penggunaan data mengacu pada UU No. 27 Tahun 2022 tentang Perlindungan Data Pribadi.
