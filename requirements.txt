@@ -1,0 +1,25 @@
+# ============================================================
+# Requirements — Sistem Skrining Risiko Klaim Pending BPJS
+# Python 3.12.4
+# ============================================================
+
+# --- Pengolahan data ---
+pandas==2.2.3
+numpy==2.2.1
+openpyxl==3.1.5
+scipy==1.15.1
+
+# --- Machine learning ---
+scikit-learn==1.6.1
+catboost==1.2.10
+
+# --- Explainability ---
+shap==0.52.0
+
+# --- Visualisasi ---
+matplotlib==3.10.0
+
+# --- API (opsional, untuk deployment) ---
+fastapi==0.141.1
+uvicorn==0.51.0
+httpx==0.28.1

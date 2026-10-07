@@ -1,0 +1,60 @@
+{
+  "model_name": "RandomForest_Pending_Risk_PKL",
+  "phase": "Phase 4 canonical (approved)",
+  "created": "2026-07-28T14:36:45.462602",
+  "seed": 42,
+  "threshold": 0.5,
+  "model_config": {
+    "n_estimators": 200,
+    "max_depth": 15,
+    "min_samples_leaf": 10,
+    "class_weight": "balanced",
+    "random_state": 42,
+    "n_jobs": -1
+  },
+  "preprocessing": {
+    "numeric_imputer": "SimpleImputer(strategy=median)",
+    "categorical_imputer": "SimpleImputer(strategy=constant, fill_value=MISSING)",
+    "categorical_encoder": "OrdinalEncoder(handle_unknown=use_encoded_value, unknown_value=-1)"
+  },
+  "data": {
+    "source": "audit/outputs/phase2_labeled_dataset.csv",
+    "april_train_rows": 3870,
+    "april_train_pending": 217,
+    "april_prevalence_pct": 5.61,
+    "may_holdout_rows": 4029,
+    "may_holdout_pending": 100,
+    "may_prevalence_pct": 2.48
+  },
+  "evaluation_may_threshold_0_50": {
+    "tp": 44,
+    "fp": 180,
+    "fn": 56,
+    "tn": 3749,
+    "recall": 0.44,
+    "precision": 0.1964,
+    "f1": 0.2716,
+    "warning_rate_pct": 5.6,
+    "pr_auc": 0.2049,
+    "roc_auc": 0.862
+  },
+  "feature_counts": {
+    "total_raw": 460,
+    "after_eligibility_filter": 61,
+    "numeric": 19,
+    "categorical": 42
+  },
+  "exclusions": {
+    "free_text_notes": 27,
+    "domain_requires_review": 7,
+    "leakage_post_bpjs": 18,
+    "identifiers": 19,
+    "pii": 17,
+    "all_null_or_constant": 256,
+    "operational_review": 40,
+    "redundant_name_versions": 8,
+    "high_card_refs_transformed": 3,
+    "icd_full_code_to_chapter": 1,
+    "date_raw_to_engineered": 13
+  }
+}

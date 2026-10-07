@@ -1,0 +1,71 @@
+# ============================================================
+# .gitignore — Sistem Skrining Risiko Klaim Pending BPJS
+# ============================================================
+
+# ---- Data asli rumah sakit (PII) — JANGAN PUSH ----
+data-real/
+data-pendukung/
+
+# ---- Semua CSV (dataset turunan mengandung identifier) ----
+*.csv
+
+# ---- Semua PNG (artefak laporan) ----
+*.png
+*_figures/
+
+# ---- Script AUDIT/DEVELOPMENT (bukan bagian sistem) ----
+audit/scripts/0*.py
+audit/scripts/1[0-8]_*.py
+audit/scripts/2[0-5]_*.py
+audit/scripts/_*.py
+
+# ---- Laporan fase & catatan pribadi ----
+audit/PHASE*.md
+DOKUMENTASI_PKL_LENGKAP.md
+PENJELASAN_61_FITUR.md
+PENJELASAN_METRIK_DAN_SISTEM.md
+LAMPIRAN_A_DAFTAR_FITUR_REVISI.md
+audit/PENJELASAN_RULE_ENGINE.md
+KOREKSI_ANGKA_LAPORAN.md
+PANDUAN_GAMBAR_LAPORAN.md
+Laporan PKL_*.md
+test_shap.png
+
+# ---- Log teks ----
+audit/outputs/*.txt
+
+# ---- File referensi besar ----
+*.xlsx
+*.xls
+
+# ============================================================
+# PENGECUALIAN (file yang TETAP disertakan)
+# ============================================================
+# File referensi ICD (bersifat publik, bukan data pasien)
+!audit/reference_data/
+!audit/reference_data/*.xlsx
+!audit/reference_data/*.csv
+
+# ---- Cache & environment ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.ipynb_checkpoints/
+.pytest_cache/
+
+# ---- IDE ----
+.vscode/
+.idea/
+*.swp
+
+# ---- OS ----
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Catatan:
+#   DISERTAKAN: pipeline.pkl (model), audit/reference_data/ (ICD + sample),
+#               kode inti, docs/, README, HANDOVER, requirements.
