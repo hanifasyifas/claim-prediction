@@ -140,9 +140,3 @@ Penggunaan data mengacu pada **UU No. 27 Tahun 2022** tentang Pelindungan Data P
 | `docs/METHODOLOGY.md` | Alur CRISP-DM |
 
 ---
-
-## 10. Kontak
-
-**Pengembang:** Hanifa Syifa Safitri
-**Institusi:** Universitas Brawijaya — Sistem Informasi
-**Periode PKL:** 1 Juli – 31 Agustus 2026
