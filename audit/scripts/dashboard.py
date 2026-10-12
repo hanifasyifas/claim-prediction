@@ -60,14 +60,28 @@ st.set_page_config(
     layout="wide",
 )
 
-# Terapkan font Poppins ke seluruh elemen
+# Terapkan font Poppins, TAPI pertahankan font ikon Material
+# (mengganti font ikon menyebabkan glyph jadi teks yang tumpang tindih)
 st.markdown(
     """
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
+    /* Poppins untuk seluruh elemen teks */
     .stApp, .stApp * {
         font-family: 'Poppins', sans-serif !important;
+    }
+
+    /* PENTING: kembalikan font ikon Material (spesifisitas lebih tinggi,
+       sehingga menang atas .stApp *) agar ikon tidak berubah jadi teks */
+    .stApp [data-testid="stIconMaterial"],
+    .stApp [class*="material-symbols"],
+    .stApp [class*="material-icons"],
+    .stApp .material-symbols-rounded,
+    .stApp .material-symbols-outlined,
+    .stApp .material-icons {
+        font-family: 'Material Symbols Rounded', 'Material Symbols Outlined',
+                     'Material Icons', sans-serif !important;
     }
     </style>
     """,
@@ -250,12 +264,19 @@ with st.expander("🔍 Detail teknis (data mentah & penjelasan)"):
     st.markdown("**Catatan penting:**")
     st.markdown(
         "- Skor dari model ML bersifat **probabilistik** — menjelaskan pola historis, "
-        "bukan alasan BPJS mem-pending klaim.\n"
-        "- Rule engine bersifat **deterministik** — memvalidasi kepatuhan koding, "
-        "bukan memprediksi Pending.\n"
-        "- Kedua komponen **independen** (tidak saling memengaruhi)."
+        "bukan alasan BPJS mem-pending klaim."
     )
+    st.markdown(
+        "- Rule engine bersifat **deterministik** — memvalidasi kepatuhan koding, "
+        "bukan memprediksi Pending."
+    )
+    st.markdown("- Kedua komponen **independen** (tidak saling memengaruhi).")
+
     st.markdown("**Data mentah klaim (field terpilih):**")
     show_cols = [c for c in ["id", "date", "exit_date", "cbg_code",
                              "bpjs_diagnosa_awal_code", "bpjs_tgl_sep", "clinic_id"] if c in raw_row]
-    st.json({k: (str(raw_row[k]) if pd.notna(raw_row[k]) else None) for k in show_cols})
+    raw_table = pd.DataFrame(
+        [(c, str(raw_row[c]) if pd.notna(raw_row[c]) else "-") for c in show_cols],
+        columns=["Field", "Nilai"],
+    )
+    st.dataframe(raw_table, hide_index=True, use_container_width=True)
