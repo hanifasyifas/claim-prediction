@@ -60,6 +60,20 @@ st.set_page_config(
     layout="wide",
 )
 
+# Terapkan font Poppins ke seluruh elemen
+st.markdown(
+    """
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+    .stApp, .stApp * {
+        font-family: 'Poppins', sans-serif !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 SEVERITY_COLOR = {"INFO": "🔵", "WARNING": "🟠", "HIGH": "🔴"}
 
 # ============================================================
@@ -173,8 +187,7 @@ if "target" in match.columns:
 # Badge: data latih vs data uji (konteks metodologis)
 if claim_month == 5:
     st.info(
-        "🔬 **KLAIM DATA UJI (MEI)** — model belum pernah melihat klaim ini. "
-        "Cocok untuk menilai performa secara jujur."
+        "🔬 **KLAIM DATA UJI (MEI)** "
     )
 elif claim_month == 4:
     st.warning(
