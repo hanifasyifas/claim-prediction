@@ -108,11 +108,28 @@ with st.sidebar:
 # ============================================================
 st.subheader("① Pilih Klaim")
 
+# Turunkan bulan dari tanggal (April = data latih, Mei = holdout/uji)
+if "date" in claims.columns:
+    claims["_month"] = pd.to_datetime(claims["date"], errors="coerce").dt.month
+else:
+    claims["_month"] = pd.NA
+has_month = claims["_month"].notna().any()
+
+month_label = st.radio(
+    "Bulan:",
+    ["Mei — data uji (holdout)", "April — data latih"],
+    horizontal=True,
+    help="Mei = klaim yang belum pernah dilihat model (evaluasi jujur). "
+         "April = klaim yang dipakai melatih model (bukan untuk evaluasi).",
+)
+selected_month = 5 if month_label.startswith("Mei") else 4
+
+pool = claims[claims["_month"] == selected_month] if has_month else claims
+
 col_a, col_b = st.columns([2, 1])
 with col_a:
-    available_ids = claims["id"].astype(int).tolist()
-    default_id = available_ids[0] if available_ids else None
-    selected = st.selectbox("Pilih ID klaim dari sampel:", available_ids)
+    available_ids = pool["id"].astype(int).tolist()
+    selected = st.selectbox("Pilih ID klaim:", available_ids) if available_ids else None
 with col_b:
     manual = st.text_input("Atau ketik ID manual:", value="")
 
@@ -134,6 +151,7 @@ if len(match) == 0:
     st.stop()
 
 raw_row = match.iloc[0].to_dict()
+claim_month = int(match.iloc[0]["_month"]) if pd.notna(match.iloc[0]["_month"]) else None
 
 # ============================================================
 # Inferensi
@@ -152,11 +170,26 @@ actual = None
 if "target" in match.columns:
     actual = "Pending" if int(match.iloc[0]["target"]) == 1 else "Claimed"
 
+# Badge: data latih vs data uji (konteks metodologis)
+if claim_month == 5:
+    st.info(
+        "🔬 **KLAIM DATA UJI (MEI)** — model belum pernah melihat klaim ini. "
+        "Cocok untuk menilai performa secara jujur."
+    )
+elif claim_month == 4:
+    st.warning(
+        "📚 **KLAIM DATA LATIH (APRIL)** — model sudah dilatih dengan klaim ini. "
+        "Skor cenderung optimistis; **bukan** untuk evaluasi. Disarankan pilih klaim Mei."
+    )
+
 info_cols = st.columns(3)
 info_cols[0].metric("Claim ID", str(claim_id))
+info_cols[1].metric(
+    "Bulan",
+    "Mei (uji)" if claim_month == 5 else ("April (latih)" if claim_month == 4 else "-"),
+)
 if actual is not None:
-    info_cols[1].metric("Historical Actual", actual)
-info_cols[2].metric("Warning", risk["recommendation"])
+    info_cols[2].metric("Historical Actual", actual)
 
 c1, c2, c3 = st.columns(3)
 c1.metric("Pending Risk", f"{risk['probability']*100:.1f}%")
