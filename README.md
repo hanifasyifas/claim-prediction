@@ -23,6 +23,7 @@ Sistem **decision-support** yang berjalan **sebelum klaim dikirim ke BPJS e-Clai
 
 - **Prediksi risiko Pending** dengan Random Forest (61 fitur, class weighting untuk data tidak seimbang)
 - **Validasi koding INA-CBG** dengan 9 aturan berbasis Permenkes 26/2021 (traceable ke pasal sumber)
+- **Dashboard UI** (Streamlit) untuk input sampel klaim + tampilan hasil model & rule engine
 - **Prototipe CLI** dengan mode QA (regression test) dan demo (presentasi)
 - **Local REST API** (FastAPI) untuk integrasi
 - **Reproducible**: model dibekukan (frozen), tidak perlu training ulang
@@ -47,6 +48,7 @@ claim-prediction-pkl/
 ├── audit/
 │   ├── scripts/                    ← kode sumber
 │   │   ├── 19_pkl_prototype.py     ← prototipe CLI
+│   │   ├── dashboard.py            ← Dashboard UI (Streamlit)
 │   │   ├── api.py                  ← FastAPI
 │   │   ├── json_response.py        ← JSON serialization
 │   │   ├── canonical_adapter.py    ← feature adapter
@@ -116,7 +118,19 @@ python audit\scripts\19_pkl_prototype.py --mode demo --demo-id 719069
 python audit\scripts\19_pkl_prototype.py --mode demo --format json --demo-id 719069
 ```
 
-### B. REST API (FastAPI)
+### B. Dashboard UI (Streamlit)
+
+Antarmuka web untuk memasukkan sampel klaim dan menampilkan keluaran model ML
+(skor risiko) dan rule engine (temuan validasi).
+
+```bash
+cd audit\scripts
+streamlit run dashboard.py
+```
+
+Buka browser ke `http://localhost:8501`.
+
+### C. REST API (FastAPI)
 
 ```bash
 cd audit\scripts
@@ -126,7 +140,7 @@ python -m uvicorn api:app --reload --port 8000
 - Swagger UI: `http://127.0.0.1:8000/docs`
 - Detail lengkap: [`docs/API.md`](docs/API.md)
 
-### C. Menjalankan Test
+### D. Menjalankan Test
 
 ```bash
 python audit\scripts\test_rule_engine.py      # 30 test

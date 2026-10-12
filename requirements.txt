@@ -23,3 +23,6 @@ matplotlib==3.10.0
 fastapi==0.141.1
 uvicorn==0.51.0
 httpx==0.28.1
+
+# --- Dashboard (Streamlit) ---
+streamlit==1.60.0
